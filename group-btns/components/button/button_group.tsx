@@ -1,20 +1,16 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { useDispatch, useSelector } from "@/store/store";
+import {
+  countAddOne,
+  countStateToggle,
+  countClear,
+} from "@/store/slices/countSlice";
 
 function ButtonGroupComp() {
-  const [count, setCount] = React.useState(0);
-  const [isDisabled, SetIsDisabled] = React.useState(false);
-
-  const buttonPlusHandler = React.useCallback(() => {
-    setCount((preCount) => preCount + 1);
-  }, []);
-  const buttonClearHandler = React.useCallback(() => {
-    setCount(0);
-  }, []);
-  const buttonToggleDisableHandler = React.useCallback(() => {
-    SetIsDisabled((preState) => !preState);
-  }, []);
+  const dispatch = useDispatch();
+  const { count, isDisabled } = useSelector((state) => state.count);
 
   return (
     <ButtonGroup
@@ -22,11 +18,11 @@ function ButtonGroupComp() {
       orientation="vertical"
       aria-label="outlined primary button group"
     >
-      <Button onClick={buttonPlusHandler} disabled={isDisabled}>
+      <Button onClick={() => dispatch(countAddOne())} disabled={isDisabled}>
         Click:{count}
       </Button>
-      <Button onClick={buttonClearHandler}>CLEAR</Button>
-      <Button onClick={buttonToggleDisableHandler}>
+      <Button onClick={() => dispatch(countClear())}>CLEAR</Button>
+      <Button onClick={() => dispatch(countStateToggle())}>
         {isDisabled ? "ABLE" : "DISABLE"}
       </Button>
     </ButtonGroup>
